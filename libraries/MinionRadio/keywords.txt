@@ -1,0 +1,51 @@
+#######################################
+# Syntax Coloring Map For MinionRadio
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MinionRadio	        KEYWORD1
+MinionRadioHandler  KEYWORD1
+MinionRadioMessage  KEYWORD1
+MinionMessageData   KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+switchOn		KEYWORD2
+switchOff		KEYWORD2
+sendTriState		KEYWORD2
+send			KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+OK                  LITERAL1
+ALREADY_ENABLED     LITERAL1
+ENABLE_FAILED       LITERAL1
+NOT_ENABLED         LITERAL1
+NOT_CONFIGURED      LITERAL1
+      
+NEW_MINION_REQ      LITERAL1
+NEW_MINION_RESP     LITERAL1
+UPD_MINION_ID_REQ   LITERAL1
+INFO_REQ            LITERAL1
+TURN_OFF_REQ        LITERAL1
+TURN_ON_REQ         LITERAL1
+STATUS_REQ          LITERAL1
+STATUS_RESP         LITERAL1
+SET_OFF_TIME_REQ    LITERAL1
+SET_ON_TIME_REQ     LITERAL1
+CLR_SCHED_TIME_REQ  LITERAL1
+PING_REQ            LITERAL1
+PONG_RESP           LITERAL1
+REPEAT_LAST         LITERAL1
+ACK_RESP            LITERAL1
+
+BROADCAST_ID        LITERAL1
+
