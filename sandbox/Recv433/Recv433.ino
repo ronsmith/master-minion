@@ -1,7 +1,7 @@
 #include <RCSwitch.h>
 
 #define RELAY_PIN 8
-#define SEND_PIN  12
+#define SEND_PIN  10
 #define RECV_INT  0   // interrupt 0 is pin 2
 
 
@@ -11,6 +11,7 @@ void setup() {
    pinMode(RELAY_PIN, OUTPUT);
    digitalWrite(RELAY_PIN, LOW);
    sw.enableReceive(RECV_INT);
+   sw.enableTransmit(SEND_PIN);
    Serial.begin(9600);
    Serial.println("setup complete");
 }
@@ -32,6 +33,8 @@ void loop() {
             break;
       }
       sw.resetAvailable();
+      delay(1000);
+      sw.send(value+1, 24);
    }
 }
 

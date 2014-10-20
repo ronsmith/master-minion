@@ -31,10 +31,10 @@ public:
     virtual void infoResponse(MinionRadioMessage& msg);
     virtual void statusResponse(MinionRadioMessage& msg);
     virtual void pingRequest(MinionRadioMessage& msg);
-    virtual void pongResponse(MinionRadioMessage& msg;)
+    virtual void pongResponse(MinionRadioMessage& msg);
     virtual void resendLastRequest(MinionRadioMessage& msg);
     virtual void ackResponse(MinionRadioMessage& msg);
-    virtual void otherMessageType
+    virtual void otherMessage(MinionRadioMessage& msg);
     
     int send(MinionRadioMessage& msg);
     int send(byte messageType, byte minionId, word minionType, MinionMessageData data)

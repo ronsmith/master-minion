@@ -44,9 +44,9 @@ public:
     virtual void scheduleOnTimeRequest(MinionRadioMessage& msg);
     virtual void clearScheduledTimesRequest(MinionRadioMessage& msg);
     virtual void pingRequest(MinionRadioMessage& msg);
-    virtual void pongResponse(MinionRadioMessage& msg;)
+    virtual void pongResponse(MinionRadioMessage& msg);
     virtual void resendLastRequest(MinionRadioMessage& msg);
-    virtual void otherMessageType
+    virtual void otherMessage(MinionRadioMessage& msg);
     
     int send(MinionRadioMessage& msg);
     int send(byte messageType, MinionMessageData data)
