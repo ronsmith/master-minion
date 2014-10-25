@@ -5,6 +5,10 @@
  * Copyright 2014, That Aint Working
  *************************************/
 
+#ifndef MINIONRADIO_H
+#define MINIONRADIO_H
+
+
 #include "MinionRadioMessage.h"
 
 
@@ -12,56 +16,61 @@ class MinionRadio {
    
     public:
    
-        MinionRadio(int sendPin=0, int recvInt=0, bool isMaster=false) :
-            sendPin(sendPin), recvInt(recvInt), enabledFlag(false), masterFlag(isMaster) { }
-                  
-        ~MinionRadio() { }
+        MinionRadio(int sendPin=-1, int recvPin=-1, unsigned long zeroPulse=4, unsigned long onePulse=8, unsigned long leadPulse=12, bool isMaster=false);
+        ~MinionRadio();
       
-        unsigned int getSendPin()           { return sendPin; }
-        void setSendPin(unsigned int sp)    { sendPin = sp; }
+        int getSendPin()           			{ return sendPin; }
+        void setSendPin(int sp)    			{ if (!enabled) sendPin = sp; }
       
-        unsigned int getRecvInt()           { return recvInt; }
-        void setRecvInt(unsigned int ri)    { recvInt = ri; }
+        int getRecvPin()           			{ return recvPin; }
+        void setRecvPin(int rp)    			{ if (!enabled) recvPin = rp; }
+		
+        int getZeroPulse()        			{ return zeroPulse; }
+        void setZeroPulse(int p)  			{ if (!enabled) zeroPulse = p; }
+				
+        int getOnePulse()        			{ return onePulse; }
+        void setOnePulse(int p)  			{ if (!enabled) onePulse = p; }
             
-        /** 
-         * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions) 
-         */
-        int enable();      
+        int getLeadPulse()        			{ return leadPulse; }
+        void setLeadPulse(int p)  			{ if (!enabled) leadPulse = p; }
+            
+        bool isEnabled()                    { return enabled; }
+        bool isMaster()                     { return master; }
+      
+        int enable();	// Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
         void disable();
       
-        bool isEnabled()                    { return enabledFlag; }
-        bool isMaster()                     { return masterFlag; }
-      
-        /**
-         * Send message using a partial message structure. Only the messageType, minionId, minionType 
-         * and data are required. The rest will be overwritten by the send method anyway.
-         * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
-         */      
-        int send(MinionRadioMessage& message);
-
         /**
          * Send message using the specified values.
          * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
          */      
         int send(byte messageType, byte minionId, word minionType, MinionMessageData data);
 
+		/**
+		 * Send message using a partial message structure. Only the messageType, minionId, minionType 
+		 * and data are required. The rest will be overwritten by the send method anyway.
+		 * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
+		 */      
+		int send(MinionRadioMessage& msg);
+
         /** 
-         * Returns NULL if no message, otherwise the returned data structure be deleted by the caller
+         * Returns NULL if no message or error reading message, otherwise 
+		 * the returned data structure MUST BE DELETED BY THE CALLER.
          */
         MinionRadioMessage* receive();
       
         /** Error Codes */
         static const int OK              =  0;  // success, not really an "error code" but, whatever
         static const int ALREADY_ENABLED = -1;  // tried to enable when already enabled
-        static const int ENABLE_FAILED   = -2;  // usually an error creating RCSwitch
+        static const int ENABLE_FAILED   = -2;  // couldn't set pin mode or interrupt handler
         static const int NOT_ENABLED     = -3;  // tried to send/receive before enable
-        static const int NOT_CONFIGURED  = -4;  // can't enable without sendPin and recvInt being set
+        static const int INVALID_CONFIG  = -4;  // can't enable without sendPin, recvInt, shortPulse, and longPulse being set
 
         /** 
-        * Message Type Codes
-        * Codes 1-100 reserved for universal message types.
-        * Codes 101-255 are used for message unique to certain minion types.
-        */
+         * Message Type Codes
+         * Codes 1-100 reserved for universal message types.
+         * Codes 101-255 are used for message unique to certain minion types.
+         */
         static const byte NEW_MINION_REQ     = 10;
         static const byte NEW_MINION_RESP    = 11;
         static const byte UPD_MINION_ID_REQ  = 12;
@@ -83,11 +92,23 @@ class MinionRadio {
 
     private:
 
-        void handleInterrupt();
-
-        int sendPin;
-        int recvInt;
-        bool enabledFlag;
-        bool masterFlag;
+		void sendLeadIn();
+		void sendLeadOut();
+		void sendPulse(unsigned long duration);
+		unsigned long waitForPulse(unsigned long waitTime=0); // waitTime=0 means it doesn't time out
+		
+        int sendPin;				// pin for transmitting data
+		int recvPin;				// pin for receiving data (should equate to the recvInt)
+		
+		unsigned long zeroPulse;	// duration of digital HIGH that will represent a zero bit
+		unsigned long onePulse;		// duration of digital HIGH that will represent a one bit
+		unsigned long headerPulse;	// duration of digital HIGH used for the lead-in/lead-out signal
+				
+        bool enabled;				// is the radio enabled?
+        bool master;				// is this a master instead of a minion?
 };
+
+
+
+#endif /* end of include guard: MINIONRADIO_H */
 
