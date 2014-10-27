@@ -59,36 +59,13 @@ class MinionRadio {
          */
         MinionRadioMessage* receive();
       
-        /** Error Codes */
-        static const int OK              =  0;  // success, not really an "error code" but, whatever
-        static const int ALREADY_ENABLED = -1;  // tried to enable when already enabled
-        static const int ENABLE_FAILED   = -2;  // couldn't set pin mode or interrupt handler
-        static const int NOT_ENABLED     = -3;  // tried to send/receive before enable
-        static const int INVALID_CONFIG  = -4;  // can't enable without sendPin, recvInt, shortPulse, and longPulse being set
-
-        /** 
-         * Message Type Codes
-         * Codes 1-100 reserved for universal message types.
-         * Codes 101-255 are used for message unique to certain minion types.
-         */
-        static const byte NEW_MINION_REQ     = 10;
-        static const byte NEW_MINION_RESP    = 11;
-        static const byte UPD_MINION_ID_REQ  = 12;
-        static const byte INFO_REQ           = 15;
-        static const byte TURN_OFF_REQ       = 20;
-        static const byte TURN_ON_REQ        = 21;
-        static const byte STATUS_REQ         = 25;
-        static const byte STATUS_RESP        = 26;
-        static const byte SET_OFF_TIME_REQ   = 30;
-        static const byte SET_ON_TIME_REQ    = 31;
-        static const byte CLR_SCHED_TIME_REQ = 35;
-        static const byte PING_REQ           = 90;
-        static const byte PONG_RESP          = 91;
-        static const byte REPEAT_LAST        = 95;
-        static const byte ACK_RESP           = 99;
-
-        /** special Minion ID reserved for broadcast messages */
-        static const byte BROADCAST_ID       = 0;
+        enum ErrorCode {
+			OK =  0,  			// Success! Not really an "error code", but whatever
+			ALREADY_ENABLED,  	// Tried to enable when already enabled
+			ENABLE_FAILED,  	// Couldn't set pin mode or interrupt handler
+			NOT_ENABLED,  		// Tried to send/receive before enable
+			INVALID_CONFIG  	// Can't enable without sendPin, recvInt, shortPulse, and longPulse being set
+		};
 
     private:
 
