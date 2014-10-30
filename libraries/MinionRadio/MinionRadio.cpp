@@ -26,7 +26,7 @@ MinionRadio::MinionRadio(int sendPin=-1, int recvPin=-1, unsigned long zeroPulse
  *
  */
 MinionRadio::~MinionRadio() { 
-
+	// nothing to see here
 }
 
 /** 

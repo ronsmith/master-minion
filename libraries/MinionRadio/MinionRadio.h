@@ -33,12 +33,13 @@ class MinionRadio {
             
         int getLeadPulse()        			{ return leadPulse; }
         void setLeadPulse(int p)  			{ if (!enabled) leadPulse = p; }
-            
-        bool isEnabled()                    { return enabled; }
+
         bool isMaster()                     { return master; }
-      
+		void setMaster(bool m)				{ if (!enabled) master = m; }
+		
         int enable();	// Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
         void disable();
+        bool isEnabled()                    { return enabled; }
       
         /**
          * Send message using the specified values.
@@ -87,5 +88,5 @@ class MinionRadio {
 
 
 
-#endif /* end of include guard: MINIONRADIO_H */
+#endif // end of include guard: MINIONRADIO_H
 

@@ -5,6 +5,10 @@
  * Copyright 2014, That Aint Working
  *************************************/
 
+#ifndef MINIONRADIOHANDLER_H
+#define MINIONRADIOHANDLER_H
+
+
 #include "MinionRadio.h"
 
 
@@ -15,24 +19,25 @@ class MinionRadioHandler {
 
 public:
 
-    MinionRadioHandler(word typ=0, byte id=0) : minionType(typ), minionId(id) { }
+    MinionRadioHandler() : minionType(0), minionId(0), radio(NULL) { }
     
-    virtual ~MinionRadioHandler() { }
+    virtual ~MinionRadioHandler() 	{ }
     
-    word getMinionType() { return minionType; }
-    void setMinionType(word typ) { minionType = typ; }
-
-    byte getMinionId() { return minionId; }
-    void setMinionId(byte id) { minionId = id; }
-
-    MinionRadio& getRadio() { return radio; }
-
-    virtual int setup(unsigned int sendPin, unsigned int recvInt, word typ, byte id=0);
+    word getMinionType() 			{ return minionType; }
+    byte getMinionId() 				{ return minionId; }
+    MinionRadio* getRadio() 		{ return radio; }
+	
+    virtual int setup(word minionType, byte minionId, MinionRadio* radio);
+	
+	/**
+	 * This is the "main loop" for monitoring the radio.
+	 */
     virtual void handle();
 
     /** 
      * Specific event handler methods are called when a particular message type is received. 
-     * Overload these as needed.
+     * They often provide some baseline functionality but you can overload these as needed, 
+	 * just remember to call the base method.
      */
     virtual void newMinionRequest(MinionRadioMessage& msg);
     virtual void updateMinionIdRequest(MinionRadioMessage& msg);
@@ -60,8 +65,7 @@ private:
 
     word minionType;
     byte minionId;
-    MinionRadio radio;
+    MinionRadio* radio;
 };
 
-
-
+#endif // end of include guard: MINIONRADIOHANDLER_H

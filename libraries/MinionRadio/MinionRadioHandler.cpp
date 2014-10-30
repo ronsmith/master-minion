@@ -10,62 +10,71 @@
 /**
  *
  */
-int MinionRadioHandler::setup(int sendPin, int recvInt, byte id=0) {
+int MinionRadioHandler::setup(word minionType, byte minionId, MinionRadio* radio) {
     Serial.println("Setup: minion radio handler.");   
-    minionId = id;   
-    radio.setSendPin(sendPin);
-    radio.setRecvInt(recvInt);
-    randomSeed(analogRead(0));
-    return radio.enable();
+	this->minionType = minionType;
+    this->minionId = minionId;
+	this->radio = radio;
+    return radio->enable();
 }
 
 /**
  *
  */
 void MinionRadioHandler::handle() {
-    Word24* req = getRadio().receive();
-    if (req != NULL) {
-        MinionRadioMessage msg(req);
-        if (msg.minionId == minionId || msg.minionId == MinionRadio::BROADCAST_ID) {
-            switch (msg.msgType) {
-                case MinionRadio::NEW_MINION_REQ:
-                    newMinionRequest(msg);
-                    break;
-                case MinionRadio::UPD_MINION_ID_REQ:
-                    updateMinionIdRequest(msg);
-                    break;
-                case MinionRadio::PING_REQ:
-                    pingRequest(msg);
-                    break;
-                case MinionRadio::INFO_REQ:
-                    infoRequest(msg);
-                    break;
-                case MinionRadio::TURN_OFF_REQ:
-                    turnOffRequest(msg);
-                    break;
-                case MinionRadio::TURN_ON_REQ:
-                    turnOnRequest(msg);
-                    break;
-                case MinionRadio::STATUS_REQ:
-                    statusRequest(msg);
-                    break;
-                case MinionRadio::SET_OFF_TIME_REQ:
-                    scheduleOffTimeRequest(msg);
-                    break;
-                case MinionRadio::SET_ON_TIME_REQ:
-                    scheduleOnTimeRequest(msg);
-                    break;
-                case MinionRadio::CLR_SCHED_TIME_REQ:
-                    clearScheduledTimesRequest(msg);
-                    break;
-                default:
-                    Serial.print("Received: unknown message type ");
-                    Serial.println((word24)msg.msgType);
-                    break;
-            }
+    MinionRadioMessage* msg = radio->receive();
+    if (msg == NULL) return;
+    if (msg->minionId == minionId || msg->minionId == MinionRadioMessageType.BROADCAST_ID) {
+        switch (msg->messageType) {
+            case MinionRadioMessageType.NEW_MINION_REQ: {
+                newMinionRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.UPD_MINION_ID_REQ: {
+                updateMinionIdRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.PING_REQ: {
+                pingRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.INFO_REQ: {
+                infoRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.TURN_OFF_REQ: {
+                turnOffRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.TURN_ON_REQ: {
+                turnOnRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.STATUS_REQ: {
+                statusRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.SET_OFF_TIME_REQ: {
+                scheduleOffTimeRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.SET_ON_TIME_REQ: {
+                scheduleOnTimeRequest(*msg);
+                break;
+			}
+            case MinionRadioMessageType.CLR_SCHED_TIME_REQ: {
+                clearScheduledTimesRequest(*msg);
+                break;
+			}
+            default: {
+				if (msg->messageType > MinionRadioMessageType.MAX_UNIVERSAL_TYPE) {
+					otherMessage(*msg);
+				}
+                break;
+			}
         }
-        delete req;
-    }      
+    }
+    delete msg;
 }
 
 /**
@@ -74,6 +83,8 @@ void MinionRadioHandler::handle() {
 void MinionRadioHandler::newMinionRequest(MinionRadioMessage& msg) {
     Serial.println("Received: new minion request.");
     if (minionId > 0 && minionId < 201) return;  // we have an assigned minionId so we are not a new minion
+	MinionRadioMessage resp;
+	resp.messageType = MinionRadioMessageType.
     minionId = getTempMinionId();
     delayRandomInterval();
     
