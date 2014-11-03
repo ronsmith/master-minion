@@ -19,7 +19,7 @@ class MinionRadioHandler {
 
 public:
 
-    MinionRadioHandler() : minionType(0), minionId(0), radio(NULL) { }
+    MinionRadioHandler() : minionType(0), minionId(0), radio(NULL) { randomSeed(analogRead(0)); }
     
     virtual ~MinionRadioHandler() 	{ }
     
@@ -27,7 +27,7 @@ public:
     byte getMinionId() 				{ return minionId; }
     MinionRadio* getRadio() 		{ return radio; }
 	
-    virtual int setup(word minionType, byte minionId, MinionRadio* radio);
+    virtual int setup(MinionRadio* radio, word minionType, byte minionId=0);
 	
 	/**
 	 * This is the "main loop" for monitoring the radio.
@@ -55,11 +55,6 @@ public:
     
     int send(MinionRadioMessage& msg);
     int send(byte messageType, MinionMessageData data)
-
-protected:
-
-    byte getTempMinionId();
-    void delayRandomInterval(unsigned int minInterval=1, unsigned int maxInterval=1000);
 
 private:
 

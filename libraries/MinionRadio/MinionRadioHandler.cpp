@@ -7,6 +7,8 @@
 
 #include "MinionRadioHandler.h"
 
+#define RANDOM_DELAY_INTERVAL 100
+
 /**
  *
  */
@@ -84,9 +86,9 @@ void MinionRadioHandler::newMinionRequest(MinionRadioMessage& msg) {
     Serial.println("Received: new minion request.");
     if (minionId > 0 && minionId < 201) return;  // we have an assigned minionId so we are not a new minion
 	MinionRadioMessage resp;
-	resp.messageType = MinionRadioMessageType.
-    minionId = getTempMinionId();
-    delayRandomInterval();
+	resp.messageType = MinionRadioMessageType.NEW_MINION_RESP
+    minionId = random(MinionRadioMesage::MIN_TEMP_ID, MinionRadioMessage::MAX_TEMP_ID+1);
+    delay(random(RANDOM_DELAY_INTERVAL));
     
 }
 

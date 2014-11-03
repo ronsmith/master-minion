@@ -8,7 +8,6 @@
 #ifndef MINIONRADIOMESSAGE_H
 #define MINIONRADIOMESSAGE_H
 
-
 union MinionRadioMessageData {
     long d;
     word w[2];
@@ -37,6 +36,14 @@ enum MinionRadioMessageType : byte {
 	// Codes 101-255 are reserved for message unique to certain minion types.
 };
 
+enum MinionId : byte {
+    BROADCAST_ID		= 0,	// special Minion ID reserved for broadcast messages
+	MASTER_ID			= 1,
+	MIN_ASSIGNED_ID		= 2,
+	MAX_ASSIGNED_ID		= 250,
+	MIN_TEMP_ID			= 251,
+	MAX_TEMP_ID			= 255
+};
 
 struct MinionRadioMessage {
     byte messageType;       		// can't use the actua enum type because we need to allow for the non-universal messages.
@@ -51,9 +58,6 @@ struct MinionRadioMessage {
     byte second;            		// 0-59
     byte checksum;          		// 0-255
 	
-    /** special Minion ID reserved for broadcast messages */
-    static const byte BROADCAST_ID       = 0;
-
 	bool isBroadcast() { return (minionID == BROADCAST_ID); }
 }; 
 
