@@ -53,7 +53,7 @@ void MinionRadio::disable() {
  * Send message using the specified values.
  * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
  */      
-void MinionRadio::send(byte messageType, byte minionId, word minionType, MinionMessageData data) {
+void MinionRadio::send(BYTE messageType, BYTE minionId, WORD minionType, MinionMessageData data) {
 	if (!enabled) return;
 	MinionRadioMessage msg;
     msg.messageType = messageType;
@@ -78,7 +78,7 @@ void MinionRadio::send(MinionRadioMessage& msg) {
 	msg.second 	= second();
 	msg.checksum = calcChecksum(msg);
 	sendLeadIn();
-	byte* bytes = &msg
+    BYTE* bytes = &msg
 	for (int by = 0; v < sizeof(msg); by++) {
 		for (int bt = 0; bt < 8; bt++) {
 			sendPulse(bitRead(bytes[by], bt) ? onePulse : zeroPulse);
@@ -161,7 +161,7 @@ MinionRadioMessage* MinionRadio::receive() {
 	// MESSAGE
 	// Finally get to read the message.
 	MinionRadioMessage* msg = new MinionRadioMessage;
-	byte* bytes = msg;
+    BYTE* bytes = msg;
 	for (int byteCount = 0; byteCount < sizeof(MinionRadioMessage); byteCount++) {
 		for (int b = 0; b < 8; b++) {
 			pulse = waitForPulse();

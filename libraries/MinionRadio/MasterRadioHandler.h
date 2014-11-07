@@ -20,7 +20,7 @@ public:
     
     MinionRadio& getRadio() { return radio; }
 
-    virtual int setup(unsigned int sendPin, unsigned int recvInt, word typ, byte id=0);
+    virtual int setup(unsigned int sendPin, unsigned int recvInt, WORD typ, BYTE id=0);
     virtual void handle();
 
     /** 
@@ -37,7 +37,7 @@ public:
     virtual void otherMessage(MinionRadioMessage& msg);
     
     int send(MinionRadioMessage& msg);
-    int send(byte messageType, byte minionId, word minionType, MinionMessageData data)
+    int send(BYTE messageType, BYTE minionId, WORD minionType, MinionMessageData data)
 
 private:
 

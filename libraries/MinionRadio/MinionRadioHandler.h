@@ -22,12 +22,13 @@ public:
     MinionRadioHandler() : minionType(0), minionId(0), radio(NULL) { randomSeed(analogRead(0)); }
     
     virtual ~MinionRadioHandler() 	{ }
-    
-    word getMinionType() 			{ return minionType; }
-    byte getMinionId() 				{ return minionId; }
+
+    WORD getMinionType() 			{ return minionType; }
+
+    BYTE getMinionId() 				{ return minionId; }
     MinionRadio* getRadio() 		{ return radio; }
 	
-    virtual int setup(MinionRadio* radio, word minionType, byte minionId=0);
+    virtual int setup(MinionRadio* radio, WORD minionType, BYTE minionId=0);
 	
 	/**
 	 * This is the "main loop" for monitoring the radio.
@@ -54,12 +55,12 @@ public:
     virtual void otherMessage(MinionRadioMessage& msg);
     
     int send(MinionRadioMessage& msg);
-    int send(byte messageType, MinionMessageData data)
+    int send(BYTE messageType, MinionMessageData data)
 
 private:
 
-    word minionType;
-    byte minionId;
+    WORD minionType;
+    BYTE minionId;
     MinionRadio* radio;
 };
 

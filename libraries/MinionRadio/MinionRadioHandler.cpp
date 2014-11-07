@@ -12,7 +12,7 @@
 /**
  *
  */
-int MinionRadioHandler::setup(word minionType, byte minionId, MinionRadio* radio) {
+int MinionRadioHandler::setup(WORD minionType, BYTE minionId, MinionRadio* radio) {
     Serial.println("Setup: minion radio handler.");   
 	this->minionType = minionType;
     this->minionId = minionId;
@@ -167,8 +167,8 @@ void MinionRadioHandler::clearScheduledTimesRequest(MinionRadioMessage& msg) {
 /**
  *
  */
-byte MinionRadioHandler::getTempMinionId() {
-    return (byte)random(201, 255);
+BYTE MinionRadioHandler::getTempMinionId() {
+    return (BYTE)random(201, 255);
 }
 
 /**
@@ -182,14 +182,14 @@ void MinionRadioHandler::delayRandomInterval(unsigned int minInterval=1, unsigne
 /**
  *
  */
-int MinionRadioHandler::send(byte id, byte msgType, byte ex0, byte ex1, byte ex2) {
+int MinionRadioHandler::send(BYTE id, BYTE msgType, BYTE ex0, BYTE ex1, BYTE ex2) {
     return getRadio().send(id, msgType, ex0, ex1, ex2);
 }
 
 /**
  *
  */
-int MinionRadioHandler::send(byte id, byte msgType, word24 extraData) {
+int MinionRadioHandler::send(BYTE id, BYTE msgType, word24 extraData) {
     return getRadio().send(id, msgType, extraData);
 }
 

@@ -16,7 +16,7 @@ class MinionRadio {
    
     public:
    
-        MinionRadio(int sendPin=-1, int recvPin=-1, unsigned long zeroPulse=4, unsigned long onePulse=8, unsigned long leadPulse=12, bool isMaster=false);
+        MinionRadio(int sendPin=-1, int recvPin=-1, LONG zeroPulse=4, LONG onePulse=8, LONG leadPulse=12, bool isMaster=false);
         ~MinionRadio();
       
         int getSendPin()           			{ return sendPin; }
@@ -45,7 +45,7 @@ class MinionRadio {
          * Send message using the specified values.
          * Returns 0 on success otherwise an error code (since arduino doesn't support exceptions)
          */      
-        int send(byte messageType, byte minionId, word minionType, MinionMessageData data);
+        int send(BYTE messageType, BYTE minionId, WORD minionType, MinionRadioMessageData data);
 
 		/**
 		 * Send message using a partial message structure. Only the messageType, minionId, minionType 
@@ -72,15 +72,15 @@ class MinionRadio {
 
 		void sendLeadIn();
 		void sendLeadOut();
-		void sendPulse(unsigned long duration);
-		unsigned long waitForPulse(unsigned long waitTime=0); // waitTime=0 means it doesn't time out
+		void sendPulse(LONG duration);
+		LONG waitForPulse(LONG waitTime=0); // waitTime=0 means it doesn't time out
 		
         int sendPin;				// pin for transmitting data
 		int recvPin;				// pin for receiving data (should equate to the recvInt)
 		
-		unsigned long zeroPulse;	// duration of digital HIGH that will represent a zero bit
-		unsigned long onePulse;		// duration of digital HIGH that will represent a one bit
-		unsigned long headerPulse;	// duration of digital HIGH used for the lead-in/lead-out signal
+		LONG zeroPulse;	// duration of digital HIGH that will represent a zero bit
+        LONG onePulse;		// duration of digital HIGH that will represent a one bit
+        LONG headerPulse;	// duration of digital HIGH used for the lead-in/lead-out signal
 				
         bool enabled;				// is the radio enabled?
         bool master;				// is this a master instead of a minion?
